@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
-import json
+import json as jsonlib
 import csv
 import shutil
 import urllib.request
@@ -61,6 +61,9 @@ def main():
         for address, token_id, balance in snapshot_entries:
             writer.writerow([address, token_id, balance])
 
+    with open(f"{target_dir}/mint_wallets.csv", "w") as file:
+        file.write(request("https://noblecards.herokuapp.com/account/getmintwallets"))
+
     print("Generated raffle:\n", target_dir)
 
 
@@ -70,7 +73,7 @@ def read_collection_ownership_from_alchemy(contract, *, block=None):
     if block is not None:
         url += f"&block={block}"
 
-    res = request_json(url)
+    res = request(url)
 
     for entries in res["ownerAddresses"]:
         owner_address = entries["ownerAddress"]
@@ -79,27 +82,26 @@ def read_collection_ownership_from_alchemy(contract, *, block=None):
             yield owner_address, int(entry["tokenId"], 16), entry["balance"]
 
 
-def request_json(url, data=None, *, method="GET"):
+def request(url, *, json=None, method="GET"):
     headers = {
-        "accept": "application/json",
-        "content-type": "application/json",
         "user-agent": "Mozilla/5.0 noblegallery.com",
     }
-    json_data = None
+    data = None
 
-    if data is not None:
-        json_data = json.dumps(data).encode("utf-8")
+    if json is not None:
+        headers["accept"] = "application/json"
+        headers["content-type"] = "application/json"
+        data = json.dumps(json).encode("utf-8")
 
-    request = urllib.request.Request(
-        url, data=json_data, headers=headers, method=method
-    )
+    request = urllib.request.Request(url, data=data, headers=headers, method=method)
     response = urllib.request.urlopen(request)
+    content_type = response.getheader("content-type")
     response_data = response.read().decode("utf-8")
 
-    if response_data:
-        return json.loads(response_data)
+    if "application/json" in content_type:
+        return jsonlib.loads(response_data)
 
-    return None
+    return response_data
 
 
 def load_dotenv():

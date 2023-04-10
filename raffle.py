@@ -93,6 +93,9 @@ def main():
     )
     parser.add_argument("--winners", default="winners.csv", help="Path to result file")
     parser.add_argument(
+        "--mint_wallets", default="mint_wallets.csv", help="Map to mint wallets"
+    )
+    parser.add_argument(
         "--supply", default=100, help="Number of winners to generate", type=int
     )
     parser.add_argument(
@@ -135,7 +138,17 @@ def main():
     # deterministic and could be reproduced by others.
     random.seed(f"{RNG_SEED_PREFIX}-{cli_args.hash}")
 
+    # Get the winners from a raffle.
     winners = raffle(owners=owners, supply=cli_args.supply)
+
+    # Load map of hold wallet to mint wallet.
+    mint_wallet_map = {
+        addr: mint_addr for addr, mint_addr in read_csv(cli_args.mint_wallets)
+    }
+
+    # Replace hold wallet with mint wallet, if exists.
+    winners = {mint_wallet_map.get(addr, addr) for addr in winners}
+
     grouped_winners = {
         address: len([w for w in winners if w == address]) for address in winners
     }
