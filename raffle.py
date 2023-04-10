@@ -147,7 +147,7 @@ def main():
     }
 
     # Replace hold wallet with mint wallet, if exists.
-    winners = {mint_wallet_map.get(addr, addr) for addr in winners}
+    winners = [mint_wallet_map.get(addr, addr) for addr in winners]
 
     grouped_winners = {
         address: len([w for w in winners if w == address]) for address in winners
