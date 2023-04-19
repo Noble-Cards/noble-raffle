@@ -32,9 +32,9 @@ def raffle(*, owners=[], supply=100):
     """
     Returns a list of winners. Sorted by address. May contain duplicates.
     """
-    # 90% of supply goes to Let's Play holders.
-    lp_picks = int(0.9 * supply)
-    # Remaining 10% goes to all other holders.
+    # 100% of supply goes to Let's Play holders.
+    lp_picks = int(1.0 * supply)
+    # Remaining goes to all other holders.
     base_picks = supply - lp_picks
 
     print("Total supply:      ", supply)
