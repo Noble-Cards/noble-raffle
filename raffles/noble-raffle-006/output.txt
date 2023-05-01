@@ -1,0 +1,45 @@
+_____ _____ _____ __    _____    _____ _____ _____ _____ __    _____ 
+|   | |     | __  |  |  |   __|  | __  |  _  |   __|   __|  |  |   __|
+| | | |  |  | __ -|  |__|   __|  |    -|     |   __|   __|  |__|   __|
+|_|___|_____|_____|_____|_____|  |__|__|__|__|__|  |__|  |_____|_____|
+
+Running Noble Raffle...
+
+Using following hash as a seed
+0x63db95ce2db7152562786af1b48f38cf58fb60b57bd00a1976a35100bf64f479
+
+Total supply:       23
+Let's Play supply:  23
+Remaining supply:   0
+
+Raffling...
+
+Let's Play winners 23
+0x04df8d02f912d34fef12a1b0488ee56fd6f7416c
+0x05576913eea5d79b83f28f0cb0d12be54fdae8dc
+0x0b313ead65233ddb8dddac125c324f9f58e4f74c
+0x0cc5428702c220cc4a68dfb6c83c6930f7270e4a
+0x23602ca06e977c86339ffddad74966e824ab691e
+0x287bdf8c332d44bb015f8b4deb6513010c951f39
+0x423232b60d97d4a989a47ee5fefd47c8dc4b0e1d
+0x47b6475df0c52306b5970dcc5e11c913c0b8f805
+0x47d278101ee9335c3a3baa14fe184f757229a7b8
+0x6e08a7b853722ed42b43f85b626e242e7256842f
+0x83ff31faa1fbe034b1bf17ad33759ed85da65e2f
+0xa266e8b5c812c6a9d63b8862599f2963d19a797e
+0xab81be93f28664daf0c1638b483e4f9d2539446e
+0xb006e407c055350055c197cc00aa38301d916d0c
+0xb0bdd53b627d7e61cfc5c13ef110e47e210fac6f
+0xb0bdd53b627d7e61cfc5c13ef110e47e210fac6f
+0xc2b35534e47cdf3d787e01630129631d8270abfb
+0xd353a1a0051175b4ddacc8e6e6ee5f3976b907e8
+0xd86057c793bdfb77bb11dcabfe054ee4fd86ebdd
+0xe01a97fc4607a388a41626d5e039fdecbfc6acd9
+0xe9d53246209e4cd87dbc5d1fee71f44bff89a611
+0xea462dbb88f5a740652dc27246b6242ebe7a2624
+0xf987a65115b267bc9a16f0eb52b7f7e94e554cbb
+
+Remaining winners 0
+
+
+Congratulations!
