@@ -28,7 +28,7 @@ IGNORED_ADDRESSES = [
 LETS_PLAY_TOKEN_ID = 34
 
 
-def raffle(*, owners=[], supply=100):
+def raffle(*, owners=[], raffle_options={}, supply=100):
     """
     Returns a list of winners. Sorted by address. May contain duplicates.
     """
@@ -53,7 +53,25 @@ def raffle(*, owners=[], supply=100):
         else:
             base_entries += [address]
 
-    lp_winners = random.sample(lps_entries, k=lp_picks)
+    # Split the addresses into those that want to participate, those that don't,
+    # and those that didn't indicate a preference.
+    participate = [address for address in lps_entries if raffle_options.get(address) == True]
+    dont_participate = [address for address in lps_entries if address in raffle_options and not raffle_options[address]]
+    no_preference = [address for address in lps_entries if address not in raffle_options]
+
+    # First pick from those that want to participate.
+    if len(participate) >= lp_picks:
+        lp_winners = random.sample(participate, k=lp_picks)
+    else:
+        # If there aren't enough, also pick from those that didn't indicate a preference.
+        lp_winners = participate
+        remaining_picks = lp_picks - len(lp_winners)
+        if len(no_preference) >= remaining_picks:
+            lp_winners += random.sample(no_preference, k=remaining_picks)
+        else:
+            # If there still aren't enough, also pick from those that didn't want to participate.
+            lp_winners += no_preference + random.sample(dont_participate, k=remaining_picks - len(no_preference))
+
     base_winners = random.sample(base_entries, k=base_picks)
 
     # Sort winners by address so the output is always the same.
@@ -94,6 +112,9 @@ def main():
     parser.add_argument("--winners", default="winners.csv", help="Path to result file")
     parser.add_argument(
         "--mint_wallets", default="mint_wallets.csv", help="Map to mint wallets"
+    )
+    parser.add_argument(
+    "--raffle_options", default="raffle_options.csv", help="Path to raffle options file"
     )
     parser.add_argument(
         "--supply", default=100, help="Number of winners to generate", type=int
@@ -138,8 +159,10 @@ def main():
     # deterministic and could be reproduced by others.
     random.seed(f"{RNG_SEED_PREFIX}-{cli_args.hash}")
 
+    raffle_options = dict(read_csv(cli_args.raffle_options, True))
+
     # Get the winners from a raffle.
-    winners = raffle(owners=owners, supply=cli_args.supply)
+    winners = raffle(owners=owners, raffle_options=raffle_options, supply=cli_args.supply)
 
     # Load map of hold wallet to mint wallet.
     mint_wallet_map = {
@@ -165,7 +188,7 @@ def main():
     print("Congratulations!")
 
 
-def read_csv(path):
+def read_csv(path, for_raffle_options=False):
     """
     Yields rows from a CSV. Ignores header.
     """
@@ -176,8 +199,12 @@ def read_csv(path):
             # Ignore header
             next(csv_reader)
 
-            for row in csv_reader:
-                yield row
+            if for_raffle_options:
+                for row in csv_reader:
+                    yield row[0], row[1].lower() == 'true'
+            else: 
+                for row in csv_reader:
+                    yield row
     except FileNotFoundError as e:
         print("File not found:", e.filename)
         exit(1)
