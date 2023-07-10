@@ -64,6 +64,9 @@ def main():
     with open(f"{target_dir}/mint_wallets.csv", "w") as file:
         file.write(request("https://noblecards.herokuapp.com/account/getmintwallets"))
 
+    with open(f"{target_dir}/raffle_options.csv", "w") as file:
+        file.write(request(f"https://noblecards.herokuapp.com/raffleoption/all/{block_number}"))
+
     print("Generated raffle:\n", target_dir)
 
 
