@@ -62,10 +62,10 @@ def main():
             writer.writerow([address, token_id, balance])
 
     with open(f"{target_dir}/mint_wallets.csv", "w") as file:
-        file.write(request("https://noblecards.herokuapp.com/account/getmintwallets"))
+        file.write(request("https://security.noblegallery.workers.dev/account/getmintwallets"))
 
     with open(f"{target_dir}/raffle_options.csv", "w") as file:
-        file.write(request(f"https://noblecards.herokuapp.com/raffleoption/all/{block_number}"))
+        file.write(request(f"https://security.noblegallery.workers.dev/raffleoption/all/{block_number}"))
 
     print("Generated raffle:\n", target_dir)
 
